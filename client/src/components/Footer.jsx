@@ -10,7 +10,7 @@ export default function FooterComponent() {
                     <div className="mt-5">
                         <Link
                             to="/"
-                            className='font-bold dark:text-white text-4xl'>
+                            className='self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white'>
                             <span className='px-2 py-1 bg-gradient-to-r from-blue-800 via-cyan-600 to-teal-300 rounded-lg text-white'>
                                 Mabel's
                             </span>
