@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function DashboardProfile() {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const filePickerRef = useRef();
@@ -148,21 +148,21 @@ export default function DashboardProfile() {
   };
 
   const handleSignOut = async () => {
-	try {
-		const res = await fetch('/api/user/signout', {
-			method: 'POST',
-		})
-		const data = await res.json()
-		console.log(res)
-		if(!res.ok){
-			console.log(data.message)
-		} else{
-			dispatch(signoutSuccess())
-		}
-	} catch (error) {
-		console.log(error.message)
-	}
-  }
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      console.log(res);
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -232,9 +232,24 @@ export default function DashboardProfile() {
           placeholder="password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientMonochrome="info" outline>
-          Update Profile
+        <Button
+          type="submit"
+          gradientMonochrome="info"
+          outline
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Loading..." : "Update Profile"}
         </Button>
+        {currentUser.isAdmin && (
+          <Button
+            type="button"
+            gradientMonochrome="cyan"
+            className="w-full"
+            href="/create-post"
+          >
+            Create a post
+          </Button>
+        )}
       </form>
       <div className="flex justify-between mt-5">
         <span
@@ -243,7 +258,9 @@ export default function DashboardProfile() {
         >
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="text-blue-500 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="text-blue-500 cursor-pointer">
+          Sign Out
+        </span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
