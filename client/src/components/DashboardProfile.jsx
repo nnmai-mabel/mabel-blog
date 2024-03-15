@@ -169,7 +169,7 @@ export default function DashboardProfile() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
-          accept="image/.*"
+          accept="image/*"
           onChange={handleImageChange}
           ref={filePickerRef}
           className="hidden"
