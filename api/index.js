@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import userRoutes from './routes/user.route.js'
 import authRoutes from './routes/auth.route.js'
 import cookieParser from 'cookie-parser'
+import postRoutes from './routes/post.route.js'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.listen(3000, () => {
 // req is data sent to api, res is data received from api
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/post', postRoutes)
 
 // Middleware
 app.use((err, req, res, next) => {
