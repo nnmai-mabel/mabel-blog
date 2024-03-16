@@ -6,6 +6,7 @@ import {
   HiDocumentText,
   HiOutlineUserGroup,
   HiAnnotation,
+  HiChartPie,
 } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../../redux/user/userSlice";
@@ -43,6 +44,17 @@ export default function DashboardSidebar() {
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
+          {
+            currentUser && currentUser.isAdmin && (
+              <Sidebar.Item
+              active={tab === 'dash' || !tab}
+              icon={HiChartPie}
+              href='/dashboard?tab=dash'
+              >
+                Dashboard
+              </Sidebar.Item>
+            )
+          }
           {/* Don't use Link outside Sidebar.Item because causing error of nested <a> tags, use href in Sidebar.Item instead */}
           <Sidebar.Item
             active={tab === "profile"}
