@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import {Button, Textarea} from 'flowbite-react'
+import { Button, Textarea } from "flowbite-react";
 
-export default function Comment({ comment, onLike, onEdit }) {
+export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const [user, setUser] = useState({});
   const { currentUser } = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(comment.content)
+  const [editedContent, setEditedContent] = useState(comment.content);
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -26,29 +26,28 @@ export default function Comment({ comment, onLike, onEdit }) {
 
   const handleEdit = () => {
     setIsEditing(true);
-    setEditedContent(comment.content)
-
+    setEditedContent(comment.content);
   };
 
   const handleSave = async () => {
-try {
-    const res = await fetch(`/api/comment/editComment/${comment._id}`, {
-        method: 'PUT',
+    try {
+      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
+        method: "PUT",
         headers: {
-            'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            content: editedContent
-        })
-    })
-    if(res.ok){
-        setIsEditing(false)
-        onEdit(comment, editedContent)
+          content: editedContent,
+        }),
+      });
+      if (res.ok) {
+        setIsEditing(false);
+        onEdit(comment, editedContent);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
-} catch (error) {
-    console.log(error.message);
-}
-  }
+  };
   return (
     <div className="flex p-4 border-b dark:border-gray-600 text-sm">
       <div className="flex-shrink-0 mr-3">
@@ -69,30 +68,30 @@ try {
         </div>
         {isEditing ? (
           <>
-          <Textarea
-            className="mb-2"
-            value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
-          />
-          <div className="flex justify-end gap-2 text-xs">
-            <Button
-            type="button"
-            size='sm'
-            gradientMonochrome='cyan'
-            onClick={handleSave}
-            >
+            <Textarea
+              className="mb-2"
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 text-xs">
+              <Button
+                type="button"
+                size="sm"
+                gradientMonochrome="cyan"
+                onClick={handleSave}
+              >
                 Save
-            </Button>
-            <Button
-            type="button"
-            size='sm'
-            gradientMonochrome='cyan'
-            outline
-            onClick={() => setIsEditing(false)}
-            >
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                gradientMonochrome="cyan"
+                outline
+                onClick={() => setIsEditing(false)}
+              >
                 Cancel
-            </Button>
-          </div>
+              </Button>
+            </div>
           </>
         ) : (
           <>
@@ -119,13 +118,23 @@ try {
               </p>
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
-                  <button
+                  <>
+				  <button
                     onClick={handleEdit}
                     type="button"
                     className="text-gray-400 hover:text-blue-500"
                   >
                     Edit
                   </button>
+				  <button
+				  onClick={() => onDelete(comment._id)}
+				  type="button"
+				  className="text-gray-400 hover:text-red-500"
+				>
+				  Delete
+				</button>
+				  </>
+				  
                 )}
             </div>
           </>
