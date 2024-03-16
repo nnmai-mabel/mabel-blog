@@ -51,7 +51,17 @@ export default function DashboardUsers() {
   const handleDeleteUser = async () => {
     setShowDeleteUserModal(false);
     try {
-      
+      const res = await fetch (`/api/user/delete/${userIdToDelete}`, {
+		method: "DELETE",
+	  })
+	  const data = await res.json()
+	  if(res.ok){
+		setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete))
+		setShowDeleteUserModal(false)
+	  }
+	  else{
+		console.log(data.message)
+	  }
     } catch (error) {
       console.log(error.message);
     }
