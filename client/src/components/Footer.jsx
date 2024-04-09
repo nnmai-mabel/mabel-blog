@@ -22,11 +22,11 @@ export default function FooterComponent() {
                             <Footer.Title title="About" />
                             <Footer.LinkGroup col>
                                 <Footer.Link
-                                    href="https://www/100jsprojects.com"
+                                    href="https://github.com/nnmai-mabel/mabel-blog"
                                     target="_blank"
                                     rel="noopenner noreferrer" // don't block popup
                                 >
-                                    Projects
+                                    Source code
                                 </Footer.Link>
                                 <Footer.Link
                                     href="/about"
